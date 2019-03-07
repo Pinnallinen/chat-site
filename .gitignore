@@ -1,0 +1,5 @@
+## npm stuff
+node_modules
+
+## Stuff not to be published to github (e.g. database password)
+secret
