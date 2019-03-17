@@ -1,0 +1,36 @@
+const BUNDLE = {
+  en: {
+    createNewUser: "Create a new user",
+    registerTitle: "Registering a new user",
+    fieldsRequired: "Fields marked with * are required",
+    username: "Username *",
+    password: "Password *",
+    password2: "Password again *",
+    email: "Email *",
+    fname: "First name *",
+    lname: "Last name *",
+    age: "Age *",
+    phone: "Phone number",
+    address: "Address",
+    cancel: "Cancel",
+    create: "Register user",
+  },
+  fi: {
+    createNewUser: "Uusi käyttäjä",
+    registerTitle: "Uuden käyttäjän rekisteröinti",
+    fieldsRequired: "* Merkityt kentät ovat pakollisia",
+    username: "Käyttäjänimi *",
+    password: "Salasana *",
+    password2: "Salasana uudestaan *",
+    email: "Sähköposti *",
+    fname: "Etunimi *",
+    lname: "Sukunimi *",
+    age: "Age *",
+    phone: "Phone number",
+    address: "Address",
+    cancel: "Peruuta",
+    create: "Luo käyttäjä",
+  },
+}
+
+export default BUNDLE;

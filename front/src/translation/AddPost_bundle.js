@@ -1,10 +1,10 @@
 const BUNDLE = {
     en: {
-        description: "Write something!",
+        content: "Write something!",
         send: "Send",
     },
     fi: {
-        description: "Kirjoita jotain!",
+        content: "Kirjoita jotain!",
         send: "Lähetä",
     },
 }

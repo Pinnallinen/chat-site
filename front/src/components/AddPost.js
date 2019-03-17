@@ -19,29 +19,35 @@ class AddPost extends Component {
         }
 
         this.state = {
-            description: "",
+            content: "",
             bundle: bundle,
         }
     }
 
     handleChange = ( event ) => {
         switch ( event.target.name ) {
-            case "description":
-                this.setState({ description: event.target.value });
+            case "content":
+                this.setState({ content: event.target.value });
         }
     }
 
     savePost = async () => {
-        const res = await fetch("/api/", {
+        const res = await fetch("/api/posts", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                description: this.state.description,
+                content: this.state.content,
                 //owner: // TODO: owner id here
             }),
         });
+
+        // Saving the post was successful
+        if ( res.status === 200 ) {
+
+        }
+
     }
 
     render() {
@@ -49,12 +55,12 @@ class AddPost extends Component {
         return (
             <div>
                 <TextField
-                    name="description"
+                    name="content"
                     multiline
                     rowsMax="5"
-                    value={this.state.description}
+                    value={this.state.content}
                     onChange={this.handleChange}
-                    label={this.state.bundle.description} />
+                    label={this.state.bundle.content} />
 
                 <Button onClick={this.savePost} > {this.state.bundle.send} </Button>
             </div>
