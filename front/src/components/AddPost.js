@@ -38,10 +38,10 @@ class AddPost extends Component {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.props.getToken()}`
                 },
                 body: JSON.stringify({
-                    content: this.state.content,
-                    //owner: // TODO: owner id here
+                    content: this.state.content
                 }),
             });
 
@@ -51,7 +51,7 @@ class AddPost extends Component {
             }
         }
         else {
-            // TODO: Error user not logged in 
+            // TODO: Error user not logged in
         }
     }
 

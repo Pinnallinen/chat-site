@@ -36,6 +36,12 @@ const salt = bcrypt.genSaltSync(10);
 const JWT_SECRET = require("./secret/secret");
 const jwt = require("jsonwebtoken");
 
+// Adding Authorization header with JWT token data 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
+  next();
+});
+
 
 /**** Database (MongoDB) stuff ****/
 

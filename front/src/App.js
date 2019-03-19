@@ -124,7 +124,7 @@ class App extends Component {
                     */
                 this.loggedIn ? (
                     <>
-                        <AddPost siteLang="en" loggedIn={this.loggedIn} />
+                        <AddPost siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
                         <button> logout </button>
                     </>
                 ):(
