@@ -31,23 +31,28 @@ class AddPost extends Component {
         }
     }
 
+    // Saving the post if the user is logged in
     savePost = async () => {
-        const res = await fetch("/api/posts", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                content: this.state.content,
-                //owner: // TODO: owner id here
-            }),
-        });
+        if ( this.props.loggedIn() ) {
+            const res = await fetch("/api/posts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: this.state.content,
+                    //owner: // TODO: owner id here
+                }),
+            });
 
-        // Saving the post was successful
-        if ( res.status === 200 ) {
+            // Saving the post was successful
+            if ( res.status === 200 ) {
 
+            }
         }
-
+        else {
+            // TODO: Error user not logged in 
+        }
     }
 
     render() {

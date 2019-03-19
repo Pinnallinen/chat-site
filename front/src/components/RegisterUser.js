@@ -19,7 +19,7 @@ class RegisterUser extends Component {
 
         var bundle = BUNDLE;
         if ( props.siteLang === "fi" )
-        bundle = bundle.fi;
+            bundle = bundle.fi;
         else {
             bundle = bundle.en;
         }
@@ -75,8 +75,9 @@ class RegisterUser extends Component {
             // If adding the new user was successful, close the dialog
             if ( response.status === 201 ) {
                 this.handleClose();
-                // TODO: Redirect to frontpage
-                //history.pushState(null, '/');
+
+                // Telling the parent we logged in
+                this.props.registeredUser(response);
             }
         }
         else {
@@ -90,31 +91,31 @@ class RegisterUser extends Component {
 
         return (
             <div>
-            <Button onClick={this.handleOpen} color="primary">
-            {bundle.createNewUser}
-            </Button>
+                <Button onClick={this.handleOpen} color="primary">
+                    {bundle.createNewUser}
+                </Button>
 
-            <Dialog open={this.state.open} onClose={this.handleClose}>
-            <DialogTitle> {bundle.registerTitle} </DialogTitle>
+                <Dialog open={this.state.open} onClose={this.handleClose}>
+                    <DialogTitle> {bundle.registerTitle} </DialogTitle>
 
-            <DialogContent>
-            <DialogContentText> {bundle.fieldsRequired} </DialogContentText>
+                    <DialogContent>
+                        <DialogContentText> {bundle.fieldsRequired} </DialogContentText>
 
-            <TextField name="username" label={bundle.username} value={this.state.username} onChange={this.handleChange} />
-            <TextField name="pass" label={bundle.password} type="password" value={this.state.pass} onChange={this.handleChange} />
-            <TextField name="pass2" label={bundle.password2} type="password" value={this.state.pass2} onChange={this.handleChange} />
-            <TextField name="email" label={bundle.email} type="email" value={this.state.email} onChange={this.handleChange} />
-            </DialogContent>
+                        <TextField name="username" label={bundle.username} value={this.state.username} onChange={this.handleChange} />
+                        <TextField name="pass" label={bundle.password} type="password" value={this.state.pass} onChange={this.handleChange} />
+                        <TextField name="pass2" label={bundle.password2} type="password" value={this.state.pass2} onChange={this.handleChange} />
+                        <TextField name="email" label={bundle.email} type="email" value={this.state.email} onChange={this.handleChange} />
+                    </DialogContent>
 
-            <DialogActions>
-            <Button onClick={this.handleClose} color="secondary">
-            {bundle.cancel}
-            </Button>
-            <Button onClick={this.submitUser} color="primary">
-            {bundle.create}
-            </Button>
-            </DialogActions>
-            </Dialog>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="secondary">
+                            {bundle.cancel}
+                        </Button>
+                        <Button onClick={this.submitUser} color="primary">
+                            {bundle.create}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         )
     };

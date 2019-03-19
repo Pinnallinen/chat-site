@@ -32,7 +32,9 @@ app.use(helmet());
 const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(10);
 
+// JSON web token stuff
 const JWT_SECRET = require("./secret/secret");
+const jwt = require("jsonwebtoken");
 
 
 /**** Database (MongoDB) stuff ****/
@@ -64,6 +66,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // Get the main page of the app (app.js, react)
 app.get("/", (req, res) => {
     // TODO: host the react-app here
+
 });
 
 // Get all the posts from the api
@@ -82,7 +85,13 @@ app.get("/api/posts", (req, res) => {
 // Get a certain post from the api
 app.get("/api/posts/:post_id", (req, res) => {
     Post.findOne({ _id: post_id}, (err, post) => {
+        if ( err ) {
+            console.log(err);
+            res.status(500).end("Can't find post");
+        }
 
+        console.log(post);
+        res.status(200).end(post);
     });
 });
 
@@ -90,6 +99,7 @@ app.get("/api/posts/:post_id", (req, res) => {
 /**** POST ****/
 
 // POSTing a new message
+// TODO: JWT login check not cookie
 app.post("/api/posts", (req, res) => {
     console.log(req.body);
 
@@ -117,10 +127,9 @@ app.post("/api/posts", (req, res) => {
 
 // Adding a new user
 app.post("/api/users", (req, res) => {
-    console.log(req.body);
-
     var body = req.body;
 
+    // Hashing the password with bcrypt
     var passHash = bcrypt.hashSync(body.pass, salt);
 
     var newUser = new User({
@@ -128,6 +137,8 @@ app.post("/api/users", (req, res) => {
         email: body.email,
         username: body.username,
     });
+
+    // Saving the new user to the DB
     newUser.save((err, user) => {
         if ( err ) {
             console.log(err);
@@ -139,11 +150,12 @@ app.post("/api/users", (req, res) => {
         }
         else {
             console.log(user._id);
-            // Logging in the user
-            res.setHeader("Set-cookie", `id=${user._id}; Max-Age=86400`); //Max-Age= 1 day
-
-            // Status 201 = created new user
-            res.status(201).end("Register successful");
+            let token = getToken(user);
+            res.json({
+                success: true,
+                err: null,
+                token
+            });
         }
     });
 });
@@ -153,15 +165,13 @@ app.post("/api/login", (req, res) => {
     console.log(req.body);
 
     User.findOne({username: req.body.username}, (err, user) => {
-        if ( bcrypt.compareSync(req.body.pass, user.passwordHash) ) {
-            let token = jwt.sign(
-                {
-                    id: user._id,
-                    username: user.username
-                },
-                JWT_SECRET,
-                { expiresIn: 86400 } // Expiry: 1 day
-            );
+        if ( err ) {
+            console.log(err);
+            res.status(500).end("No user found");
+        }
+
+        if ( bcrypt.compareSync(req.body.password, user.passwordHash) ) {
+            let token = getToken(user);
             res.json({
                 success: true,
                 err: null,
@@ -174,3 +184,18 @@ app.post("/api/login", (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at localhost:${port}`);
 });
+
+/**** Helper functions ****/
+
+
+function getToken(user) {
+    return token = jwt.sign(
+        {
+            id: user._id,
+            username: user.username
+        },
+        //JWT_SECRET,
+        "admin",
+        { expiresIn: 86400 } // Expiry: 1 day
+    );
+}
