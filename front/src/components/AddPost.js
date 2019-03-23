@@ -51,6 +51,7 @@ class AddPost extends Component {
             }
         }
         else {
+            this.props.history.replace("/");
             // TODO: Error user not logged in
         }
     }

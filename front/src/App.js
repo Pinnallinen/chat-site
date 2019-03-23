@@ -41,6 +41,10 @@ class App extends Component {
                 return this.setState({
                     siteLang: "en",
                 });
+            default:
+                return this.setState({
+                    siteLang: "en",
+                })
         }
     };
 
@@ -62,12 +66,13 @@ class App extends Component {
                 password: userInfo.password,
             })
         }).then((res) => {
-            res = res.json()
-            .then((res) => {
-                console.log(res);
-
-                this.setToken(res.token);
-            });
+            if ( res.status === 200 ) {
+                res.json()
+                .then((res) => {
+                    console.log(res);
+                    this.setToken(res.token);
+                });
+            }
         });
     };
 
@@ -80,11 +85,17 @@ class App extends Component {
     };
 
     decodeToken = (token) => {
+        console.log(token);
         var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var parsed = JSON.parse(atob(base64));
-        console.log(parsed);
-        return parsed;
+        if ( base64Url ) {
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var parsed = JSON.parse(atob(base64));
+            console.log(parsed);
+            return parsed;
+        }
+        else {
+            return null;
+        }
     };
 
     // Check if the current token is expired
@@ -122,7 +133,7 @@ class App extends Component {
             <div>
                 { /* If user is logged in show logout and addpost, else show register and login
                     */
-                this.loggedIn ? (
+                this.loggedIn?(
                     <>
                         <AddPost siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
                         <button> logout </button>
@@ -135,7 +146,7 @@ class App extends Component {
 
                 )}
 
-                <DisplayPosts siteLang="en" />
+                <DisplayPosts siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
             </div>
         );
     }

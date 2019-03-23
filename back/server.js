@@ -36,7 +36,7 @@ const salt = bcrypt.genSaltSync(10);
 const JWT_SECRET = require("./secret/secret");
 const jwt = require("jsonwebtoken");
 
-// Adding Authorization header with JWT token data 
+// Adding Authorization header with JWT token data
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
   next();
@@ -108,17 +108,22 @@ app.get("/api/posts/:post_id", (req, res) => {
 // TODO: JWT login check not cookie
 app.post("/api/posts", (req, res) => {
     console.log(req.body);
+    console.log(req.cookies);
 
     // If the user is logged in add the post
-    if ( req.cookies.id ) {
-        console.log(req.cookies.id);
+    if ( req.headers.authorization.startsWith("Bearer ") ) {
+        var token = req.headers.authorization.slice(7, req.headers.authorization.length);
+
+        var decoded = jwt.verify(token, "admin");
+        console.log(decoded);
+
         console.log(Date());
         console.log(Date.now());
 
         var newPost = new Post({
-            owner: req.cookies.id,
+            owner: decoded.username,
             content: req.body.content,
-            date: Date.now(),
+            date: Date(),
         });
         newPost.save((err, post) => {
             if ( err ) {
@@ -126,7 +131,7 @@ app.post("/api/posts", (req, res) => {
                 res.status(500).end("Adding the post failed.");
             }
             console.log(post);
-            res.status(201).end("Added the post");
+            res.status(201).json(post);
         });
     }
 });
@@ -171,7 +176,7 @@ app.post("/api/login", (req, res) => {
     console.log(req.body);
 
     User.findOne({username: req.body.username}, (err, user) => {
-        if ( err ) {
+        if ( err || user === null ) {
             console.log(err);
             res.status(500).end("No user found");
         }
