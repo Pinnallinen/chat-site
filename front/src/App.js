@@ -5,7 +5,7 @@ import './App.css';
 import AddPost from "./components/AddPost";
 import RegisterUser from "./components/RegisterUser";
 import LogInUser from "./components/LogInUser";
-import DisplayPosts from "./components/DisplayPosts";
+import DisplayPost from "./components/DisplayPost";
 
 class App extends Component {
 
@@ -14,9 +14,32 @@ class App extends Component {
 
         this.state = {
             siteLang: "en",
-            user: {}
+            user: {},
+            posts: [],
         };
     }
+
+    // Fetches all the posts from the backend REST api
+    getPosts = async () => {
+        var res = await fetch("api/posts");
+        if ( res.status === 200 ) {
+            var posts = await res.json();
+            console.log(posts);
+            if ( posts ) {
+                console.log(posts);
+                var allPosts = posts.map((post) => {
+                    console.log(post);
+                    return <DisplayPost post={post} />;
+                })
+                this.setState({
+                    posts: allPosts,
+                });
+            }
+        }
+        else {
+            // TODO: no posts found
+        }
+    };
 
     setToken = (token) => {
         localStorage.setItem("idToken", token);
@@ -26,7 +49,7 @@ class App extends Component {
         return localStorage.getItem("idToken");
     };
 
-    logOut = () => {
+    removeToken = () => {
         localStorage.removeItem("idToken");
     };
 
@@ -50,7 +73,6 @@ class App extends Component {
 
 
     loggedIn = () => {
-        console.log(!this.isTokenExpired());
         return (!this.isTokenExpired());
     };
 
@@ -71,8 +93,21 @@ class App extends Component {
                 .then((res) => {
                     console.log(res);
                     this.setToken(res.token);
+
+                    // Reload the page
+                    this.setState({
+                        state: this.state
+                    });
                 });
             }
+        });
+    };
+
+    handleLogout = () => {
+        this.removeToken();
+
+        this.setState({
+            state: this.state
         });
     };
 
@@ -85,12 +120,11 @@ class App extends Component {
     };
 
     decodeToken = (token) => {
-        console.log(token);
         var base64Url = token.split('.')[1];
         if ( base64Url ) {
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             var parsed = JSON.parse(atob(base64));
-            console.log(parsed);
+            //console.log(parsed);
             return parsed;
         }
         else {
@@ -113,6 +147,7 @@ class App extends Component {
     };
 
     componentWillMount() {
+        this.getPosts();
         if ( this.loggedIn() ) {
             let token = this.decodeToken(this.getToken());
             let user = {};
@@ -128,15 +163,18 @@ class App extends Component {
         }
     }
 
+    /* If user is logged in show logout and addpost, else show register and login
+
+
+       */
     render() {
+
         return (
-            <div>
-                { /* If user is logged in show logout and addpost, else show register and login
-                    */
-                this.loggedIn?(
+            <div >
+                { this.loggedIn() ? (
                     <>
                         <AddPost siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
-                        <button> logout </button>
+                        <button onClick={this.handleLogout}> logout </button>
                     </>
                 ):(
                     <>
@@ -146,7 +184,9 @@ class App extends Component {
 
                 )}
 
-                <DisplayPosts siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
+                <div class="center" >
+                    {this.state.posts}
+                </div>
             </div>
         );
     }

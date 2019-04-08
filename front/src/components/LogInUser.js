@@ -50,7 +50,7 @@ class LogInUser extends Component {
     render() {
 
         return (
-            <div>
+            <div >
                 <ExpansionPanel expanded={this.state.expanded} onChange={this.handleChange}>
                     <ExpansionPanelSummary >
                         {this.state.bundle.login}
