@@ -29,7 +29,7 @@ class App extends Component {
                 console.log(posts);
                 var allPosts = posts.map((post) => {
                     console.log(post);
-                    return <DisplayPost post={post} />;
+                    return <DisplayPost post={post} loggedIn={this.loggedIn} getToken={this.getToken} />;
                 })
                 this.setState({
                     posts: allPosts,

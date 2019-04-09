@@ -106,9 +106,9 @@ app.get("/api/posts/:post_id", (req, res) => {
 
 // POSTing a new message
 // TODO: JWT login check not cookie
+// TODO: Check that JWT is not expired
 app.post("/api/posts", (req, res) => {
     console.log(req.body);
-    console.log(req.cookies);
 
     // If the user is logged in add the post
     if ( req.headers.authorization.startsWith("Bearer ") ) {
@@ -133,6 +133,47 @@ app.post("/api/posts", (req, res) => {
             console.log(post);
             res.status(201).json(post);
         });
+    }
+});
+
+app.post("/api/posts/:post_id", (req, res) => {
+    //console.log(req.params);
+    //console.log(req.body);
+
+    // If the user is logged in add the comment
+    if ( req.headers.authorization.startsWith("Bearer ") ) {
+        var token = req.headers.authorization.slice(7, req.headers.authorization.length);
+
+        var decoded = jwt.verify(token, "admin");
+        console.log(decoded);
+
+        if ( !isTokenExpired(decoded) ) {
+            Post.findOne({ _id: req.params.post_id}, (err, post) => {
+                console.log(post);
+
+                let postAnswers2 = post.answers.map((answer) => {
+                    console.log(answer.toObject());
+                    return answer.toObject();
+                });
+                postAnswers2.push(
+                    {
+                        answer_owner: decoded.username,
+                        content: req.body.content,
+                        answer_date: Date(),
+                    }
+                );
+                console.log(postAnswers2);
+                post.answers = postAnswers2;
+                post.save()
+                .then(() => {
+                    res.status(200).end("Anser saved");
+                })
+                .catch((err) => {
+                    console.log(err);
+                    res.status(500).end("Something went wrong");
+                });
+            });
+        }
     }
 });
 
@@ -198,6 +239,14 @@ app.listen(port, () => {
 
 /**** Helper functions ****/
 
+function isTokenExpired(token) {
+    if (Date.now() / 1000 > token.exp) {
+      return true;
+    }
+    else {
+        return false;
+    }
+}
 
 function getToken(user) {
     return token = jwt.sign(

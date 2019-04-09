@@ -28,11 +28,38 @@ class DisplayPost extends Component {
             bundle = bundle.en;
         }
 
-
         this.state = {
             bundle: bundle,
             postOpen: false,
+            comment: "",
+            postComments: [],
         }
+    }
+
+    componentWillMount() {
+        var postComments = this.props.post.answers.map((answer) => {
+            console.log(answer);
+            return (
+                <div class="post">
+                    <Typography color="textSecondary" align="right" >
+                        {answer.answer_owner}
+                    </Typography>
+
+                    <Typography inline={true} color="textSecondary">
+                        {answer.answer_date}
+                    </Typography>
+
+
+                    <Typography >
+                        {answer.content}
+                    </Typography>
+                </div>
+            );
+        });
+        console.log(postComments);
+        this.setState({
+            postComments: postComments,
+        });
     }
 
     openPost = () => {
@@ -48,7 +75,34 @@ class DisplayPost extends Component {
     };
 
     handleComment = async () => {
-        
+
+        if ( this.props.loggedIn() ) {
+            console.log(`/api/posts/${this.props.post._id}`);
+            const res = await fetch(`/api/posts/${this.props.post._id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${this.props.getToken()}`
+                },
+                body: JSON.stringify({
+                    content: this.state.comment,
+                }),
+            });
+
+            // Saving the post was successful
+            // TODO: reload post content
+            if ( res.status === 200 ) {
+                this.setState({
+                    state: this.state,
+                });
+            }
+        }
+    };
+
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name]: event.target.value,
+        });
     };
 
     render() {
@@ -85,6 +139,8 @@ class DisplayPost extends Component {
                                 <Typography>
                                     {post.content}
                                 </Typography>
+
+                                {this.state.postComments}
 
                                 <TextField
                                     name="comment"

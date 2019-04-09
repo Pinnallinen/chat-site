@@ -10,6 +10,7 @@ const postSchema = new Schema(
         // Answers to the post in an array of answers
         answers: [{
             answer_owner: { type: String, required: true },
+            answer_date: { type: Date, required: true },
             content: {type: String, required: true },
         }],
     },
