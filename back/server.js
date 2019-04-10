@@ -151,22 +151,24 @@ app.post("/api/posts/:post_id", (req, res) => {
             Post.findOne({ _id: req.params.post_id}, (err, post) => {
                 console.log(post);
 
-                let postAnswers2 = post.answers.map((answer) => {
+                let postAnswers = post.answers.map((answer) => {
                     console.log(answer.toObject());
                     return answer.toObject();
                 });
-                postAnswers2.push(
+                postAnswers.push(
                     {
                         answer_owner: decoded.username,
                         content: req.body.content,
                         answer_date: Date(),
                     }
                 );
-                console.log(postAnswers2);
-                post.answers = postAnswers2;
+                console.log(postAnswers);
+                post.answers = postAnswers;
                 post.save()
                 .then(() => {
-                    res.status(200).end("Anser saved");
+                    console.log("then :");
+                    console.log(post);
+                    res.status(200).end(JSON.stringify(post));
                 })
                 .catch((err) => {
                     console.log(err);

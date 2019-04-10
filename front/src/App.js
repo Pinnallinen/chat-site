@@ -7,6 +7,8 @@ import RegisterUser from "./components/RegisterUser";
 import LogInUser from "./components/LogInUser";
 import DisplayPost from "./components/DisplayPost";
 
+import Button from '@material-ui/core/Button';
+
 class App extends Component {
 
     constructor(props) {
@@ -174,7 +176,7 @@ class App extends Component {
                 { this.loggedIn() ? (
                     <>
                         <AddPost siteLang="en" loggedIn={this.loggedIn} getToken={this.getToken} />
-                        <button onClick={this.handleLogout}> logout </button>
+                        <Button onClick={this.handleLogout}> logout </Button>
                     </>
                 ):(
                     <>

@@ -32,12 +32,16 @@ class DisplayPost extends Component {
             bundle: bundle,
             postOpen: false,
             comment: "",
-            postComments: [],
+            postComments: null,
         }
     }
 
     componentWillMount() {
-        var postComments = this.props.post.answers.map((answer) => {
+        this.setPostComments(this.props.post.answers);
+    }
+
+    setPostComments(rawPostComments) {
+        var postComments = rawPostComments.map((answer) => {
             console.log(answer);
             return (
                 <div class="post">
@@ -58,6 +62,7 @@ class DisplayPost extends Component {
         });
         console.log(postComments);
         this.setState({
+            comment: "",
             postComments: postComments,
         });
     }
@@ -92,9 +97,11 @@ class DisplayPost extends Component {
             // Saving the post was successful
             // TODO: reload post content
             if ( res.status === 200 ) {
-                this.setState({
-                    state: this.state,
-                });
+                //console.log(res);
+                var newPost = await res.json();
+                console.log(newPost.answers);
+
+                this.setPostComments(newPost.answers);
             }
         }
     };
@@ -129,7 +136,7 @@ class DisplayPost extends Component {
 
                 { // If the post is open, display the post otherwise nothing
                 this.state.postOpen?(
-                    <>
+                    <div id="padding-0">
                         <Dialog open={this.state.postOpen} onClose={this.handleClose} >
                             <DialogContent>
                                 <Typography align="right" color="textSecondary">
@@ -154,7 +161,7 @@ class DisplayPost extends Component {
 
                             </DialogContent>
                         </Dialog>
-                    </>
+                    </div>
                 ):(
                     <>
                     </>

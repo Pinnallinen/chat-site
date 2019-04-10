@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"cd back && nodemon server\" \"cd front && npm start\""
+    "start": "cd back && node server",
+    "startdev": "concurrently \"cd back && nodemon server\" \"cd front && npm start\""
   },
   "author": "",
   "license": "ISC",
