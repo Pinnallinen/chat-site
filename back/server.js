@@ -254,7 +254,7 @@ function getToken(user) {
             username: user.username
         },
         //JWT_SECRET,
-        "admin",
+        JWT_SECRET,
         { expiresIn: 86400 } // Expiry: 1 day
     );
 }
