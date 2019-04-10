@@ -33,7 +33,7 @@ const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(10);
 
 // JSON web token stuff
-const JWT_SECRET = require("./secret/secret");
+const JWT_SECRET = "admin";
 const jwt = require("jsonwebtoken");
 
 // Adding Authorization header with JWT token data
@@ -47,9 +47,7 @@ app.use((req, res, next) => {
 
 const mongoose = require("mongoose");
 
-const { MONGODBURL } = require("./secret/secret");
-
-
+const MONGODBURL = "mongodb+srv://admin:admin@chat-site-ahfdj.mongodb.net/test?retryWrites=true";
 
 const User = require("./models/user");
 const Post = require("./models/post");
@@ -71,8 +69,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // Get the main page of the app (app.js, react)
 app.get("/", (req, res) => {
-    // TODO: host the react-app here
-
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Get all the posts from the api
