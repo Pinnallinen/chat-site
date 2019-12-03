@@ -11,8 +11,6 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8000;
 
-const path = require('path');
-
 
 /**** Middlewares ****/
 
@@ -67,28 +65,15 @@ db.once("open", () => {
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 
-// Get the main page of the app (app.js, react)
-
-if (process.env.NODE_ENV == "production") {
-
-    // Static files
-    app.use(express.static(path.join(__dirname, 'build')));
-
-    // React routing
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    });
-}
-
 
 /**** API CALLS ****/
-
 
 /**** GET ****/
 
 // Get all the posts from the api
 app.get("/api/posts", (req, res) => {
     Post.find({}, (err, posts) => {
+        console.log("i tried");
         if ( err ) {
             console.log(err);
             res.status(500).end("Something went wrong");
@@ -246,6 +231,21 @@ app.post("/api/login", (req, res) => {
         }
     })
 });
+
+/**** React hosting ****/
+
+// Get the main page of the app (app.js, react)
+
+//if (process.env.NODE_ENV == "production") {
+    // Static files
+    app.use(express.static(path.join(__dirname, 'front', 'build')));
+
+    // React routing
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'front', 'build', 'index.html'));
+    });
+//}
+
 
 app.listen(port, () => {
     console.log(`Server running at localhost:${port}`);

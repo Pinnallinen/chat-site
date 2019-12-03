@@ -22,8 +22,14 @@ class App extends Component {
     }
 
     // Fetches all the posts from the backend REST api
+    // TODO: no posts found
     getPosts = async () => {
-        var res = await fetch("api/posts");
+        var res = await fetch("api/posts", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
         if ( res.status === 200 ) {
             var posts = await res.json();
             console.log(posts);
@@ -39,7 +45,6 @@ class App extends Component {
             }
         }
         else {
-            // TODO: no posts found
             console.log("Fetching posts failed");
         }
     };

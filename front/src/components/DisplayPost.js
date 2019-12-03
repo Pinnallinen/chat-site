@@ -112,6 +112,8 @@ class DisplayPost extends Component {
         });
     };
 
+
+    // TODO: Change comment field to be seen only when user logged in
     render() {
         var post = this.props.post;
         var bundle = this.state.bundle;

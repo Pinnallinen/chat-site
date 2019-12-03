@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd back && node server",
+    "start": "node server",
+    "heroku-postbuild": "cd front && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "dev": "concurrently \"cd back && nodemon server\" \"cd front && npm start\""
   },
   "author": "",
