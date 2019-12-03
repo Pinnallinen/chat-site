@@ -91,7 +91,7 @@ class RegisterUser extends Component {
         var bundle = this.state.bundle;
 
         return (
-            <div class="float-left">
+            <div className="float-left">
                 <Button onClick={this.handleOpen} color="primary">
                     {bundle.createNewUser}
                 </Button>

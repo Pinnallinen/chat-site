@@ -42,7 +42,7 @@ class DisplayPost extends Component {
 
     setPostComments(rawPostComments) {
         var postComments = rawPostComments.map((answer) => {
-            console.log(answer);
+            //console.log(answer);
             return (
                 <div class="post">
                     <Typography classes={{ root: "float-left" }} color="textSecondary" align="right" >
@@ -60,7 +60,7 @@ class DisplayPost extends Component {
                 </div>
             );
         });
-        console.log(postComments);
+        //console.log(postComments);
         this.setState({
             comment: "",
             postComments: postComments,

@@ -11,6 +11,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8000;
 
+const path = require('path');
 
 
 /**** Middlewares ****/
@@ -43,7 +44,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
   next();
 });
-
 
 /**** Database (MongoDB) stuff ****/
 

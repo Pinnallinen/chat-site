@@ -28,7 +28,7 @@ class App extends Component {
             var posts = await res.json();
             console.log(posts);
             if ( posts ) {
-                console.log(posts);
+                //console.log(posts);
                 var allPosts = posts.map((post) => {
                     console.log(post);
                     return <DisplayPost post={post} loggedIn={this.loggedIn} getToken={this.getToken} />;
@@ -40,6 +40,7 @@ class App extends Component {
         }
         else {
             // TODO: no posts found
+            console.log("Fetching posts failed");
         }
     };
 
