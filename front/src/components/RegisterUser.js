@@ -69,11 +69,12 @@ class RegisterUser extends Component {
                 }),
             });
 
+            console.log(response);
             const body = await response.text();
             console.log(body);
 
             // If adding the new user was successful, close the dialog
-            if ( response.status === 201 ) {
+            if ( response.status === 200 ) {
                 this.handleClose();
 
                 // Telling the parent we logged in

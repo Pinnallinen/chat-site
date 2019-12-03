@@ -45,11 +45,11 @@ class DisplayPost extends Component {
             console.log(answer);
             return (
                 <div class="post">
-                    <Typography color="textSecondary" align="right" >
+                    <Typography classes={{ root: "float-left" }} color="textSecondary" align="right" >
                         {answer.answer_owner}
                     </Typography>
 
-                    <Typography inline={true} color="textSecondary">
+                    <Typography color="textSecondary">
                         {answer.answer_date}
                     </Typography>
 

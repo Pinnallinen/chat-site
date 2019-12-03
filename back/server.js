@@ -2,6 +2,7 @@
     The backend for a simple site where you can post threads.
 */
 
+const path = require("path");
 
 /**** Express imports ****/
 
@@ -9,6 +10,7 @@ const express = require("express");
 
 const app = express();
 const port = process.env.PORT || 8000;
+
 
 
 /**** Middlewares ****/
@@ -65,12 +67,24 @@ db.once("open", () => {
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 
-/**** GET ****/
-
 // Get the main page of the app (app.js, react)
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+
+if (process.env.NODE_ENV == "production") {
+
+    // Static files
+    app.use(express.static(path.join(__dirname, 'build')));
+
+    // React routing
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    });
+}
+
+
+/**** API CALLS ****/
+
+
+/**** GET ****/
 
 // Get all the posts from the api
 app.get("/api/posts", (req, res) => {
@@ -133,6 +147,7 @@ app.post("/api/posts", (req, res) => {
     }
 });
 
+// Adding a new comment
 app.post("/api/posts/:post_id", (req, res) => {
     //console.log(req.params);
     //console.log(req.body);

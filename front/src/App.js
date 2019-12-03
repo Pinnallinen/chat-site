@@ -118,7 +118,7 @@ class App extends Component {
     registeredUser = (response) => {
         this.setToken(response.token);
 
-        this.props.history.replace("/");
+        window.location.reload();
     };
 
     decodeToken = (token) => {
@@ -186,7 +186,7 @@ class App extends Component {
 
                 )}
 
-                <div class="center" >
+                <div className="center" >
                     {this.state.posts}
                 </div>
             </div>

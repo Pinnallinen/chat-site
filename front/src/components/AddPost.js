@@ -33,6 +33,7 @@ class AddPost extends Component {
 
     // Saving the post if the user is logged in
     savePost = async () => {
+        console.log("tssti1");
         if ( this.props.loggedIn() ) {
             const res = await fetch("/api/posts", {
                 method: "POST",
@@ -46,8 +47,9 @@ class AddPost extends Component {
             });
 
             // Saving the post was successful
-            if ( res.status === 200 ) {
-
+            if ( res.status === 201 ) {
+                console.log("hello");
+                window.location.reload(); 
             }
         }
         else {
