@@ -212,10 +212,9 @@ app.post("/api/users", (req, res) => {
 
 // The route which checks login info
 app.post("/api/login", (req, res) => {
-    console.log(req.body);
 
     User.findOne({username: req.body.username}, (err, user) => {
-        if ( err || user === null ) {
+        if ( err || user === null || user.passwordHash === null ) {
             console.log(err);
             res.status(500).end("No user found");
         }
