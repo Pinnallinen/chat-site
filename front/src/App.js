@@ -150,7 +150,6 @@ class App extends Component {
                 if ( decodedToken.exp < Date.now() / 1000 )
                     return false;
             }
-            return true;
         }
         return true;
     };
