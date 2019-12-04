@@ -212,10 +212,15 @@ app.post("/api/users", (req, res) => {
 
 // The route which checks login info
 app.post("/api/login", (req, res) => {
+    console.log(req.body);
 
     User.findOne({username: req.body.username}, (err, user) => {
+<<<<<<< HEAD
         console.log(user);
         if ( err || user === null || user.passwordHash === null ) {
+=======
+        if ( err || user === null ) {
+>>>>>>> parent of bbf0a2e... Added additional check for passwordhash != null
             console.log(err);
             res.status(500).end("No user found");
         }
