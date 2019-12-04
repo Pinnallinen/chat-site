@@ -214,7 +214,6 @@ app.post("/api/users", (req, res) => {
 app.post("/api/login", (req, res) => {
 
     User.findOne({username: req.body.username}, (err, user) => {
-        console.log(user);
         if ( err || user === null || user.passwordHash === null ) {
             console.log(err);
             res.status(500).end("No user found");
