@@ -147,7 +147,7 @@ class App extends Component {
             let decodedToken = this.decodeToken(token);
 
             if ( decodedToken ) {
-                if ( decodedToken.exp > Date.now() / 1000 )
+                if ( decodedToken.exp < Date.now() / 1000 )
                     return false;
             }
             return true;

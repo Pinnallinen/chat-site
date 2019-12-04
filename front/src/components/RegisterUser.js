@@ -78,8 +78,7 @@ class RegisterUser extends Component {
                 this.handleClose();
 
                 // Telling the parent we logged in
-                // TODO: Doesn't work!
-                //this.props.registeredUser(response);
+                this.props.registeredUser(body);
             }
         }
         else {

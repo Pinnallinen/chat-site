@@ -73,7 +73,6 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // Get all the posts from the api
 app.get("/api/posts", (req, res) => {
     Post.find({}, (err, posts) => {
-        console.log("i tried");
         if ( err ) {
             console.log(err);
             res.status(500).end("Something went wrong");
