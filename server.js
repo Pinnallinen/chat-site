@@ -234,7 +234,6 @@ app.post("/api/login", (req, res) => {
             });
         }
     })
-    res.status(500).end("Log-in failed");
 });
 
 /**** React hosting ****/
