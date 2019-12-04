@@ -269,6 +269,6 @@ function getToken(user) {
         },
         //JWT_SECRET,
         JWT_SECRET,
-        { expiresIn: 86400 } // Expiry: 1 day
+        { expiresIn: 864000 } // Expiry: 10 days
     );
 }

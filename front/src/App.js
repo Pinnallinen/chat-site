@@ -75,7 +75,7 @@ class App extends Component {
             default:
                 return this.setState({
                     siteLang: "en",
-                })
+                });
         }
     };
 
@@ -147,7 +147,7 @@ class App extends Component {
             let decodedToken = this.decodeToken(token);
 
             if ( decodedToken ) {
-                if ( decodedToken.exp < Date.now() / 1000 )
+                if ( decodedToken.exp > Date.now() / 1000 )
                     return false;
             }
         }
@@ -156,6 +156,7 @@ class App extends Component {
 
     componentWillMount() {
         this.getPosts();
+        console.log(this.loggedIn());
         if ( this.loggedIn() ) {
             let token = this.decodeToken(this.getToken());
             let user = {};
