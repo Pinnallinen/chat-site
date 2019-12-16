@@ -47,7 +47,8 @@ app.use((req, res, next) => {
 
 const mongoose = require("mongoose");
 
-const MONGODBURL = "mongodb+srv://admin:admin@chat-site-ahfdj.mongodb.net/test?retryWrites=true";
+// TODO: move to hidden folder
+const MONGODBURL = "mongodb+srv://admin:admin@cluster0-ahfdj.mongodb.net/test?retryWrites=true&w=majority";
 
 const User = require("./models/user");
 const Post = require("./models/post");
