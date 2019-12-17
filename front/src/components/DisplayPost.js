@@ -151,15 +151,22 @@ class DisplayPost extends Component {
 
                                 {this.state.postComments}
 
-                                <TextField
-                                    name="comment"
-                                    label={bundle.comment}
-                                    value={this.state.comment}
-                                    onChange={this.handleChange} />
+                                { this.props.loggedIn() ? (
+                                    <>
+                                        <TextField
+                                            name="comment"
+                                            label={bundle.comment}
+                                            value={this.state.comment}
+                                            onChange={this.handleChange} />
 
-                                <Button onClick={this.handleComment} >
-                                    {bundle.postComment}
-                                </Button>
+                                        <Button onClick={this.handleComment} >
+                                            {bundle.postComment}
+                                        </Button>
+                                    </>
+                                ):(
+                                    <>
+                                    </>
+                                )}
 
                             </DialogContent>
                         </Dialog>

@@ -45,6 +45,7 @@ class App extends Component {
             }
         }
         else {
+            // TODO: Error message for fetching posts failed?
             console.log("Fetching posts failed");
         }
     };

@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 const mongoose = require("mongoose");
 
 // TODO: move to hidden folder
-const MONGODBURL = "mongodb+srv://admin:admin@cluster0-ahfdj.mongodb.net/test?retryWrites=true&w=majority";
+const MONGODBURL = "mongodb://admin:admin@cluster0-shard-00-00-ahfdj.mongodb.net:27017,cluster0-shard-00-01-ahfdj.mongodb.net:27017,cluster0-shard-00-02-ahfdj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 const User = require("./models/user");
 const Post = require("./models/post");
