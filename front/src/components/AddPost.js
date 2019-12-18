@@ -46,8 +46,9 @@ class AddPost extends Component {
             });
 
             // Saving the post was successful
-            if ( res.status === 200 ) {
-
+            if ( res.status === 201 ) {
+                console.log("hello");
+                window.location.reload();
             }
         }
         else {

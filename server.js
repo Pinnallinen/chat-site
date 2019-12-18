@@ -2,6 +2,7 @@
     The backend for a simple site where you can post threads.
 */
 
+const path = require("path");
 
 /**** Express imports ****/
 
@@ -42,12 +43,12 @@ app.use((req, res, next) => {
   next();
 });
 
-
 /**** Database (MongoDB) stuff ****/
 
 const mongoose = require("mongoose");
 
-const MONGODBURL = "mongodb+srv://admin:admin@chat-site-ahfdj.mongodb.net/test?retryWrites=true";
+// TODO: move to hidden folder
+const MONGODBURL = "mongodb://admin:admin@cluster0-shard-00-00-ahfdj.mongodb.net:27017,cluster0-shard-00-01-ahfdj.mongodb.net:27017,cluster0-shard-00-02-ahfdj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
 
 const User = require("./models/user");
 const Post = require("./models/post");
@@ -65,12 +66,10 @@ db.once("open", () => {
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 
-/**** GET ****/
 
-// Get the main page of the app (app.js, react)
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+/**** API CALLS ****/
+
+/**** GET ****/
 
 // Get all the posts from the api
 app.get("/api/posts", (req, res) => {
@@ -133,6 +132,7 @@ app.post("/api/posts", (req, res) => {
     }
 });
 
+// Adding a new comment
 app.post("/api/posts/:post_id", (req, res) => {
     //console.log(req.params);
     //console.log(req.body);
@@ -213,10 +213,10 @@ app.post("/api/users", (req, res) => {
 
 // The route which checks login info
 app.post("/api/login", (req, res) => {
-    console.log(req.body);
 
     User.findOne({username: req.body.username}, (err, user) => {
-        if ( err || user === null ) {
+        console.log(user);
+        if ( err || user === null || user.passwordHash === null ) {
             console.log(err);
             res.status(500).end("No user found");
         }
@@ -231,6 +231,21 @@ app.post("/api/login", (req, res) => {
         }
     })
 });
+
+/**** React hosting ****/
+
+// Get the main page of the app (app.js, react)
+
+//if (process.env.NODE_ENV == "production") {
+    // Static files
+    app.use(express.static(path.join(__dirname, 'front', 'build')));
+
+    // React routing
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'front', 'build', 'index.html'));
+    });
+//}
+
 
 app.listen(port, () => {
     console.log(`Server running at localhost:${port}`);
@@ -254,7 +269,7 @@ function getToken(user) {
             username: user.username
         },
         //JWT_SECRET,
-        "admin",
-        { expiresIn: 86400 } // Expiry: 1 day
+        JWT_SECRET,
+        { expiresIn: 864000 } // Expiry: 10 days
     );
 }

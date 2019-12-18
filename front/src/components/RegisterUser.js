@@ -69,15 +69,16 @@ class RegisterUser extends Component {
                 }),
             });
 
+            console.log(response);
             const body = await response.text();
             console.log(body);
 
             // If adding the new user was successful, close the dialog
-            if ( response.status === 201 ) {
+            if ( response.status === 200 ) {
                 this.handleClose();
 
                 // Telling the parent we logged in
-                this.props.registeredUser(response);
+                this.props.registeredUser(body);
             }
         }
         else {
@@ -90,7 +91,7 @@ class RegisterUser extends Component {
         var bundle = this.state.bundle;
 
         return (
-            <div class="float-left">
+            <div className="float-left">
                 <Button onClick={this.handleOpen} color="primary">
                     {bundle.createNewUser}
                 </Button>

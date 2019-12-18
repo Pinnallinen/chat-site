@@ -42,14 +42,14 @@ class DisplayPost extends Component {
 
     setPostComments(rawPostComments) {
         var postComments = rawPostComments.map((answer) => {
-            console.log(answer);
+            //console.log(answer);
             return (
                 <div class="post">
-                    <Typography color="textSecondary" align="right" >
+                    <Typography classes={{ root: "float-left" }} color="textSecondary" align="right" >
                         {answer.answer_owner}
                     </Typography>
 
-                    <Typography inline={true} color="textSecondary">
+                    <Typography color="textSecondary">
                         {answer.answer_date}
                     </Typography>
 
@@ -60,7 +60,7 @@ class DisplayPost extends Component {
                 </div>
             );
         });
-        console.log(postComments);
+        //console.log(postComments);
         this.setState({
             comment: "",
             postComments: postComments,
@@ -112,6 +112,8 @@ class DisplayPost extends Component {
         });
     };
 
+
+    // TODO: Change comment field to be seen only when user logged in
     render() {
         var post = this.props.post;
         var bundle = this.state.bundle;
@@ -149,15 +151,22 @@ class DisplayPost extends Component {
 
                                 {this.state.postComments}
 
-                                <TextField
-                                    name="comment"
-                                    label={bundle.comment}
-                                    value={this.state.comment}
-                                    onChange={this.handleChange} />
+                                { this.props.loggedIn() ? (
+                                    <>
+                                        <TextField
+                                            name="comment"
+                                            label={bundle.comment}
+                                            value={this.state.comment}
+                                            onChange={this.handleChange} />
 
-                                <Button onClick={this.handleComment} >
-                                    {bundle.postComment}
-                                </Button>
+                                        <Button onClick={this.handleComment} >
+                                            {bundle.postComment}
+                                        </Button>
+                                    </>
+                                ):(
+                                    <>
+                                    </>
+                                )}
 
                             </DialogContent>
                         </Dialog>

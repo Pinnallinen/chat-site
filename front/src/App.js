@@ -22,13 +22,19 @@ class App extends Component {
     }
 
     // Fetches all the posts from the backend REST api
+    // TODO: no posts found
     getPosts = async () => {
-        var res = await fetch("api/posts");
+        var res = await fetch("api/posts", {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
         if ( res.status === 200 ) {
             var posts = await res.json();
             console.log(posts);
             if ( posts ) {
-                console.log(posts);
+                //console.log(posts);
                 var allPosts = posts.map((post) => {
                     console.log(post);
                     return <DisplayPost post={post} loggedIn={this.loggedIn} getToken={this.getToken} />;
@@ -39,7 +45,8 @@ class App extends Component {
             }
         }
         else {
-            // TODO: no posts found
+            // TODO: Error message for fetching posts failed?
+            console.log("Fetching posts failed");
         }
     };
 
@@ -69,7 +76,7 @@ class App extends Component {
             default:
                 return this.setState({
                     siteLang: "en",
-                })
+                });
         }
     };
 
@@ -118,7 +125,7 @@ class App extends Component {
     registeredUser = (response) => {
         this.setToken(response.token);
 
-        this.props.history.replace("/");
+        window.location.reload();
     };
 
     decodeToken = (token) => {
@@ -140,16 +147,17 @@ class App extends Component {
         if ( token ) {
             let decodedToken = this.decodeToken(token);
 
-            if ( decodedToken.exp < Date.now() / 1000 ) {
-                return true;
+            if ( decodedToken ) {
+                if ( decodedToken.exp > Date.now() / 1000 )
+                    return false;
             }
-            return false;
         }
         return true;
     };
 
     componentWillMount() {
         this.getPosts();
+        console.log(this.loggedIn());
         if ( this.loggedIn() ) {
             let token = this.decodeToken(this.getToken());
             let user = {};
@@ -186,7 +194,7 @@ class App extends Component {
 
                 )}
 
-                <div class="center" >
+                <div className="center" >
                     {this.state.posts}
                 </div>
             </div>
